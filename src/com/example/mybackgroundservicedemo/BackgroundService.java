@@ -130,6 +130,24 @@ public class BackgroundService extends Service {
 			startActivity(intent);
     		break;
         }
+    	else{
+    		// skipping the printer activity or our ContentcardApp.
+        	if(recentTasks.get(0).baseActivity.getPackageName().equalsIgnoreCase(getPackageName()) || recentTasks.get(0).topActivity.toShortString().equalsIgnoreCase(currentActivityName)){
+        		// do nothing as current running app is ContentcardApp or Printer App
+        	}
+        	else{
+        		// App launched from Recent Apps
+        		// Our Application has gone in background, so restart service so that the HomeActivity is launched.
+        		
+        		((MyApplication)getApplicationContext()).setIdleTime(0);
+        		
+        		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    			startActivity(intent);
+    			break;
+        	}
+    	}
     }
 }
 	
